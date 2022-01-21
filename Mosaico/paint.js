@@ -1,13 +1,10 @@
 window.addEventListener("DOMContentLoaded", function () {
-    
-    let colorActivo="";
+    //primero identifico el color activo por defecto
+    let elemento = document.querySelector('#paleta .seleccionado');
+    let estilos = getComputedStyle(elemento);
+    let colorActivo = estilos.backgroundColor;
     let pincelActivado=false;
-    
 
-    //función para añadir eventos
-    function crearEvento(elemento,evento,miFuncion){
-        elemento.addEventListener(evento,miFuncion);
-    }
 
     //obtener Id
     function getId(elemento){
@@ -29,54 +26,51 @@ window.addEventListener("DOMContentLoaded", function () {
                 celda.style.border = "1px solid black";
                 celda.style.height = "10px";
                 celda.style.width = "10px";
-                celda.addEventListener('mouseover')
+                // celda.addEventListener('mouseover');
                 // celda.style.backgroundColor="red";
             } 
         }
     }
     
-    // function clasesActivas(){
-    //     const elemento = document.addEventListener('click',function(){
-    //          event.target;      
-    //     });
-    //     console.log(elemento);
-    //     let clasesActivas = elemento.classList;
-    //     console.log(clasesActivas);
-    //     return clasesActivas;
-    // } esto no sirve esta mal
-    //let clases = document.addEventListener('click',clasesActivas());
+    function seleccionarColorPaleta(event){
+        let tdColorSel = document.querySelector('#paleta .seleccionado');//seleccionado que es hijo
+        tdColorSel.classList.remove("seleccionado");
     
-    let tablaColores = getId("paleta");
+        event.target.classList.add('seleccionado');
+        let estilos = getComputedStyle(event.target);
+        colorActivo = estilos.backgroundColor;
+
+    }
+
+    let tablaColores = document.getElementById("paleta");
     let celdasColores = tablaColores.getElementsByTagName("td");
+    //pongo el mismo listener para el evento click a todas las celdas de colores de la paleta
     for(let i=0;i<celdasColores.length;i++){
-        crearEvento(celdasColores[i],'click',detectarColorPaleta)
-    }
-
-    function detectarColorPaleta(){
-        let clase = document.querySelector('seleccionado');
-        let estilos = getComputedStyle(clase);
-        let color = estilos.backgroundColor;
-        return color;
-    }
-    
-    let tabla = document.getElementsById('paleta');
-    let td = tabla.firstChild.firstChild;
-    let listaDeClases = td.classList;
-
-    
-
-    function pintar(){
-        
-        document.addEventListener('mouseover',function(){
-
-        })
+        celdasColores[i].addEventListener('click',seleccionarColorPaleta);
     }
     
     
-    // function pincelActivado(){
-        
-    // }
+    function togglePincel(){
+        pincelActivado = !pincelActivado;
+        if(pincelActivado){
+            document.getElementById('pincel').textContent='Pincel activado';
+        }else{
+            document.getElementById('pincel').textContent='Pincel desactivado';
+        }
+    
+    }
 
+    function pintar (event){
+        if(pincelActivado){//solo pinta si el pincel esta activado
+            event.target.style.backgroundColor = colorActivo;
+        }
+    }
+    //pongo a escuchar a todas las celdas
+    let celdas = document.querySelectorAll('#zonadibujo td');
+    for (let i=0;i<celdas.length;i++){
+        celdas[i].addEventListener('click',togglePincel);//añado el evento click para activar/desactivar el pincel
+        celdas[i].addEventListener('mouseover',pintar);//añado evento mouseover para pintar
+    }
 
 
 
