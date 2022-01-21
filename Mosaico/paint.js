@@ -6,10 +6,6 @@ window.addEventListener("DOMContentLoaded", function () {
     let pincelActivado=false;
 
 
-    //obtener Id
-    function getId(elemento){
-        return document.getElementById(elemento);
-    }
     dibujarTablero();
 
     function dibujarTablero(){
@@ -50,8 +46,13 @@ window.addEventListener("DOMContentLoaded", function () {
     }
     
     
-    function togglePincel(){
-        pincelActivado = !pincelActivado;
+    function togglePincel(){//funciona como un toggle un click activa el pincel, el siguiente click lo desactiva  
+        if(pincelActivado){
+            pincelActivado=false;
+        }else{
+            pincelActivado=true;
+        }
+        //cambio el mensaje
         if(pincelActivado){
             document.getElementById('pincel').textContent='Pincel activado';
         }else{
