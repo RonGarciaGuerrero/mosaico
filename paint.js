@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", function () {
     //primero identifico el color activo por defecto
-    let elemento = document.querySelector('#paleta .seleccionado');
+    let elemento = document.querySelector('#paleta .seleccionado'); 
     let estilos = getComputedStyle(elemento);
     let colorActivo = estilos.backgroundColor;
     let pincelActivado=false;
